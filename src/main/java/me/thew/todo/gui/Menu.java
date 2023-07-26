@@ -45,10 +45,10 @@ public class Menu {
                     setItem((ItemStack) list.get(i), i);
                 }
                 if (list.isNextPageAvailable()) {
-                    setItem(50, Material.OAK_BUTTON, "Страница " + (page + 1));
+                    setItem(50, Material.OAK_BUTTON, "§fСледующая страница");
                 }
                 if (list.isPreviousPageAvailable()) {
-                    setItem(48, Material.OAK_BUTTON, "Страница " + (page - 1));
+                    setItem(48, Material.OAK_BUTTON, "§fПредыдущая страница");
                 }
                 player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 0.7f, 1.0f);
             } else {
@@ -62,8 +62,6 @@ public class Menu {
             });
         });
     }
-
-
     public void onClick(int slot, ItemStack item, ClickType clickType) {
         if(isPaper(item)){
             String key = Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(Todo.getInstance().getNamespacedKey(), PersistentDataType.STRING);
@@ -88,12 +86,12 @@ public class Menu {
                 setItem((ItemStack) list.get(i), i);
             }
             if (list.isNextPageAvailable()) {
-                setItem(50, Material.OAK_BUTTON, "Страница " + (page + 1));
+                setItem(50, Material.OAK_BUTTON, "§fСледующая страница");
             } else {
                 setItem(50, Material.AIR, null);
             }
             if (list.isPreviousPageAvailable()) {
-                setItem(48, Material.OAK_BUTTON, "Страница " + (page + 1));
+                setItem(48, Material.OAK_BUTTON, "§fПредыдущая страница");
             } else {
                 setItem(48, Material.AIR, null);
             }
@@ -107,10 +105,10 @@ public class Menu {
 
     private boolean isPageSlot(int slot){
         switch (slot){
-            case 53:
+            case 50:
                 page += 1;
                 return true;
-            case 45:
+            case 48:
                 page -= 1;
                 return true;
         }
