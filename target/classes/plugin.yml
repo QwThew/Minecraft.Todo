@@ -1,8 +1,0 @@
-name: todo
-version: '1.0'
-main: me.thew.todo.Todo
-api-version: '1.16'
-commands:
-  todo:
-    permission: todo.check
-    permission-message: ' §4Нет прав!'
