@@ -6,7 +6,7 @@ todo:
     meta:
       ==: ItemMeta
       meta-type: BOOK_SIGNED
-      title: Проверка
-      author: S1esta
+      title: Check
+      author: Bunny
       pages:
-        - '{"text":"Текст для проверки"}'
+        - '{"text":"Text for test"}'

@@ -5,4 +5,4 @@ api-version: '1.16'
 commands:
   todo:
     permission: todo.check
-    permission-message: ' §4Нет прав!'
+    permission-message: ' §4No!'

@@ -1,6 +1,5 @@
 package me.thew.todo.gui;
 
-import me.thew.todo.Command;
 import me.thew.todo.Todo;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,16 +15,12 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.List;
 import java.util.Objects;
 
-import static me.thew.todo.Command.checkExist;
-import static me.thew.todo.Command.removeTodo;
-
 public class Menu {
     private final Inventory inventory = Bukkit.createInventory(null, 54, "Todo");
     private final Player player;
     private int page = 0;
     private PaginatedArrayList list;
     private final List<ItemStack> items;
-
 
     public Menu(Player player) {
 
@@ -62,6 +57,38 @@ public class Menu {
             });
         });
     }
+
+    private boolean isClear(){
+        int x = 0;
+        for (int i = 0; i < 45; i++){
+            if(inventory.getItem(i) != null)
+                x++;
+        }
+        return x == 0;
+    }
+
+    private void generateSection(int page){
+        list.gotoPage(page);
+        for(int i = 0; i < 45; i++){
+            setItem(i, Material.AIR, null);
+        }
+        for (int i = 0; i < 45; ++i) {
+            if(i >= list.size())
+                break;
+            setItem((ItemStack) list.get(i), i);
+        }
+        if (list.isNextPageAvailable()) {
+            setItem(50, Material.OAK_BUTTON, "§fСледующая страница");
+        } else {
+            setItem(50, Material.AIR, null);
+        }
+        if (list.isPreviousPageAvailable()) {
+            setItem(48, Material.OAK_BUTTON, "§fПредыдущая страница");
+        } else {
+            setItem(48, Material.AIR, null);
+        }
+    }
+
     public void onClick(int slot, ItemStack item, ClickType clickType) {
         if(isPaper(item)){
             String key = Objects.requireNonNull(item.getItemMeta()).getPersistentDataContainer().get(Todo.getInstance().getNamespacedKey(), PersistentDataType.STRING);
@@ -74,27 +101,16 @@ public class Menu {
                 setItem(slot, Material.AIR, null);
             }
         }
-
+        if(isClear()){
+            if(page == 0){
+                player.closeInventory();
+                return;
+            } else{
+                generateSection(page -1);
+            }
+        }
         if(isPageSlot(slot)){
-            list.gotoPage(page);
-            for(int i = 0; i < 45; i++){
-                setItem(i, Material.AIR, null);
-            }
-            for (int i = 0; i < 45; ++i) {
-                if(i >= list.size())
-                    break;
-                setItem((ItemStack) list.get(i), i);
-            }
-            if (list.isNextPageAvailable()) {
-                setItem(50, Material.OAK_BUTTON, "§fСледующая страница");
-            } else {
-                setItem(50, Material.AIR, null);
-            }
-            if (list.isPreviousPageAvailable()) {
-                setItem(48, Material.OAK_BUTTON, "§fПредыдущая страница");
-            } else {
-                setItem(48, Material.AIR, null);
-            }
+            generateSection(page);
         }
         Bukkit.getScheduler().runTaskLaterAsynchronously(Todo.getInstance(), player::updateInventory, 3L);
     }
